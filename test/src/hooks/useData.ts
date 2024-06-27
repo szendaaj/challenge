@@ -11,7 +11,7 @@ export const useData = () => {
   }, [apiUrl]);
 
   const uploadData = useCallback(
-    (file: File) => {
+    async (file: File) => {
       if (!file) return Promise.reject("No file selected");
 
       const formData = new FormData();
