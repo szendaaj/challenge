@@ -57,9 +57,6 @@ function App() {
           setCurrentData(data.data);
         })
         .catch((error) => {
-          if (error.response.status === 404 && currentData.length > 0) {
-            setCurrentData([]);
-          }
           console.error(error);
         });
   };
