@@ -7,7 +7,6 @@ const fs = require("fs-extra");
 const app = express();
 const upload = multer({ dest: "uploads/" });
 
-app.use(cors());
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
