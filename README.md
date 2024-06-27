@@ -1,5 +1,3 @@
-# Test solution
-
 ## Local developent
 
 ### 1. Staring server
