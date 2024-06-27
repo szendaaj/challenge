@@ -31,11 +31,7 @@ function App() {
         setCurrentData(data.data);
       })
       .catch((error) => {
-        if (error.response.status === 404) {
-          setCurrentData([]);
-        } else {
-          console.error("err", error);
-        }
+        console.error("err", error);
       });
   }, [getData]);
 
