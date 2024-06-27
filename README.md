@@ -13,5 +13,8 @@ Go to test folder and check if environment variables are set correctly for the f
 
 To start frontend in development mode run `npm start`. The app will run on port [3001](http://localhost:3001).
 
+**Notes:**
+- The data.json file contains the parsed data. If you remove that, you can upload a new flat file. Please note there is no validation for the file yet so please upload valid files only.
+
 
 
