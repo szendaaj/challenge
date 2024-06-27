@@ -5,7 +5,7 @@ import { useData } from "./hooks/useData";
 import { useForm } from "react-hook-form";
 
 type FormData = {
-  file: File | null;
+  file: FileList | null;
 };
 
 function App() {
@@ -15,7 +15,6 @@ function App() {
   const {
     register,
     handleSubmit,
-    setValue,
     watch,
     formState: { errors },
   } = useForm<FormData>({
@@ -32,7 +31,11 @@ function App() {
         setCurrentData(data.data);
       })
       .catch((error) => {
-        console.error(error);
+        if (error.response.status === 404) {
+          setCurrentData([]);
+        } else {
+          console.error("err", error);
+        }
       });
   }, [getData]);
 
@@ -45,14 +48,17 @@ function App() {
       : [];
   }, [currentData]);
 
-  const uploadFile = (formData: FormData) => {
-    uploadData(selectedFile as File)
-      .then((data) => {
-        setCurrentData(data.data);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+  const uploadFile = async (formData: FormData) => {
+    const file = formData.file?.[0];
+
+    file &&
+      uploadData(file)
+        .then((data) => {
+          setCurrentData(data.data);
+        })
+        .catch((error) => {
+          console.error(error);
+        });
   };
 
   return (
@@ -76,12 +82,11 @@ function App() {
             accept=".txt"
             multiple={false}
             {...register("file", { validate: (value) => value !== null })}
-            onChange={(e) => setValue("file", e.target.files?.[0] ?? null)}
           />
           {errors.file && (
             <p className="text-red-700">This field is required</p>
           )}
-          {selectedFile && <p>{selectedFile.name}</p>}
+          {selectedFile && <p>{selectedFile[0].name}</p>}
           <button
             type="submit"
             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
