@@ -10,6 +10,12 @@ const upload = multer({ dest: "uploads/" });
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+app.use(
+  cors({
+    origin: "http://localhost:3001",
+  })
+);
+
 
 async function parseFile(filePath) {
 const removeLineBreaks = (str) => str.replace(/(\r\n|\n|\r)/gm, "");
@@ -32,7 +38,7 @@ app.post("/upload", upload.single("file"), async (req, res) => {
     const filePath = req.file.path;
     const data = await parseFile(filePath);
     await fs.writeFile("data.json", JSON.stringify(data, null, 2));
-    res.send("File processed successfully.");
+    res.status(200).send(data);
   } catch (error) {
     console.error(error);
     res.status(500).send("An error occurred processing the file.");
@@ -55,12 +61,6 @@ app.get("/data", async (_req, res) => {
     res.status(500).send("An error occurred");
   }
 });
-
-app.use(
-  cors({
-    origin: "http://localhost:3001",
-  })
-);
 
 const port = process.env.PORT || 5300;
 app.listen(port, () => {
